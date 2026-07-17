@@ -327,6 +327,29 @@
       setTimeout(function(){ window.location.href = el.dataset.url; }, 600);
     }
 
+    /* ── ELEMENTO CLICKABLE POR RAYCASTER CENTRAL (respaldo para móvil) ── */
+    function getClickableAtCenter() {
+      var camEl = document.getElementById('camera');
+      if (!camEl) return null;
+      var cam = camEl.getObject3D('camera');
+      if (!cam) return null;
+      var rc = new THREE.Raycaster();
+      rc.setFromCamera(new THREE.Vector2(0,0), cam);
+      var meshes = [];
+      document.querySelectorAll('.clickable').forEach(function(el) {
+        el.object3D.traverse(function(o){ if (o.isMesh) meshes.push(o); });
+      });
+      var hits = rc.intersectObjects(meshes, true);
+      if (!hits.length) return null;
+      var obj = hits[0].object;
+      for (var i = 0; i < 8; i++) {
+        if (obj.el && obj.el.classList && obj.el.classList.contains('clickable')) return obj.el;
+        if (!obj.parent) break;
+        obj = obj.parent;
+      }
+      return null;
+    }
+
     /* ── BOTÓN PORTAL ── */
     var btnPortal = document.getElementById('btn-portal');
     btnPortal.addEventListener('touchstart', function(e) {
@@ -345,11 +368,11 @@
       }, true);
     });
 
-    /* ── MÁQUINA EXPENDEDORA → ACTIVA/DESACTIVA "SIT DOWN. STAND UP" CON CLICK ── */
+    /* ── MÁQUINA EXPENDEDORA → ACTIVA/DESACTIVA "SIT DOWN. STAND UP" CON CLICK/TAP ── */
     var maquinaExpendedora = document.getElementById('maquinaExpendedora');
     var sitDownSong = document.getElementById('sitDownSong');
 
-    maquinaExpendedora.addEventListener('click', function () {
+    function toggleSitDownSong() {
       if (sitDownSong.paused) {
         sitDownSong.play().catch(function (err) {
           console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
@@ -357,6 +380,35 @@
       } else {
         sitDownSong.pause();
       }
+    }
+
+    // 1) Click nativo de A-Frame (funciona bien con ratón en desktop)
+    maquinaExpendedora.addEventListener('click', toggleSitDownSong);
+
+    // 2) Respaldo táctil: si el tap en móvil no dispara el click de A-Frame
+    //    (conflicto habitual con look-controls), comprobamos manualmente
+    //    qué hay en el centro de la mira al soltar el dedo, sin haber arrastrado.
+    var sceneEl = document.querySelector('a-scene');
+    var tapStartX = 0, tapStartY = 0, tapMoved = false;
+
+    sceneEl.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      tapStartX = e.touches[0].clientX;
+      tapStartY = e.touches[0].clientY;
+      tapMoved = false;
+    }, { passive: true });
+
+    sceneEl.addEventListener('touchmove', function (e) {
+      if (e.touches.length !== 1) return;
+      var dx = e.touches[0].clientX - tapStartX;
+      var dy = e.touches[0].clientY - tapStartY;
+      if (Math.sqrt(dx * dx + dy * dy) > 12) tapMoved = true;
+    }, { passive: true });
+
+    sceneEl.addEventListener('touchend', function () {
+      if (tapMoved) return; // fue un arrastre para mirar alrededor, no un tap
+      var el = getClickableAtCenter();
+      if (el && el.id === 'maquinaExpendedora') toggleSitDownSong();
     });
 
     /* ── DESBLOQUEO DE AUDIO EN MÓVIL ── */

@@ -345,30 +345,18 @@
       }, true);
     });
 
-    /* ── MÁQUINA EXPENDEDORA → ARRANCA "SIT DOWN. STAND UP" TRAS UNOS SEGUNDOS ── */
+    /* ── MÁQUINA EXPENDEDORA → ARRANCA "SIT DOWN. STAND UP" AL HACER CLICK ── */
     var maquinaExpendedora = document.getElementById('maquinaExpendedora');
     var sitDownSong = document.getElementById('sitDownSong');
-    var sitDownDelayMs = 4000; // segundos de espera tras iniciar el zumbido de la máquina
-    var sitDownTimeout = null;
     var sitDownStarted = false;
 
-    maquinaExpendedora.addEventListener('mouseenter', function () {
-      if (sitDownStarted) return; // ya sonó una vez; no se repite en próximos hovers
-      sitDownTimeout = setTimeout(function () {
-        sitDownSong.currentTime = 0;
-        sitDownSong.play().catch(function (err) {
-          console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
-        });
-        sitDownStarted = true;
-      }, sitDownDelayMs);
-    });
-
-    maquinaExpendedora.addEventListener('mouseleave', function () {
-      // Si el usuario aparta la mirada antes de que pase el tiempo, se cancela
-      if (sitDownTimeout && !sitDownStarted) {
-        clearTimeout(sitDownTimeout);
-        sitDownTimeout = null;
-      }
+    maquinaExpendedora.addEventListener('click', function () {
+      if (sitDownStarted) return; // ya sonó una vez; no se repite en próximos clicks
+      sitDownStarted = true;
+      sitDownSong.currentTime = 0;
+      sitDownSong.play().catch(function (err) {
+        console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
+      });
     });
 
     /* ── DESBLOQUEO DE AUDIO EN MÓVIL ── */

@@ -345,18 +345,18 @@
       }, true);
     });
 
-    /* ── MÁQUINA EXPENDEDORA → ARRANCA "SIT DOWN. STAND UP" AL HACER CLICK ── */
+    /* ── MÁQUINA EXPENDEDORA → ACTIVA/DESACTIVA "SIT DOWN. STAND UP" CON CLICK ── */
     var maquinaExpendedora = document.getElementById('maquinaExpendedora');
     var sitDownSong = document.getElementById('sitDownSong');
-    var sitDownStarted = false;
 
     maquinaExpendedora.addEventListener('click', function () {
-      if (sitDownStarted) return; // ya sonó una vez; no se repite en próximos clicks
-      sitDownStarted = true;
-      sitDownSong.currentTime = 0;
-      sitDownSong.play().catch(function (err) {
-        console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
-      });
+      if (sitDownSong.paused) {
+        sitDownSong.play().catch(function (err) {
+          console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
+        });
+      } else {
+        sitDownSong.pause();
+      }
     });
 
     /* ── DESBLOQUEO DE AUDIO EN MÓVIL ── */

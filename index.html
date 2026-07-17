@@ -208,19 +208,31 @@
     <a-entity gltf-model="f13f73463dfb40f8a429c2f4b60c563f.glb" animation-mixer="" position="-1.0783 1.69295 11.42761" rotation="180 59 0"></a-entity>
 
     <!-- ── PORTAL DE SALIDA — vuelve al hub (World 1) ── -->
-    <a-link id="portalSalida" on="portal-manual-only"
-      href="https://carlatienzam-byte.github.io/EPE-IES-Carmen-de-Burgos-Segui/"
-      title="Volver al Hub"
-      position="-24.11984 1.6 110.52281"
-      scale="1 1 1"
-      geometry="primitive: circle; segments: 64"
-      material="shader: portal; side: double; previewDistance: 7.5"
-      rotation="0 90 0"
-      class="portal"
-      data-url="https://carlatienzam-byte.github.io/EPE-IES-Carmen-de-Burgos-Segui/">
-      <a-entity text="align: center; color: white; font: kelsonsans; value: Hub; width: 5"
-                position="0 1.5 0" rotation="0 180 0"></a-entity>
-    </a-link>
+  <a-link id="portalSalida" 
+    on="portal-manual-only" 
+    href="https://carlatienzam-byte.github.io/EPE-IES-Carmen-de-Burgos-Segui/" 
+    title="Volver al Hub"
+    image="backrooms.jpg"
+    position="20.84891 1.6 -1.37972" 
+    geometry="primitive: circle; segments: 64" 
+    material="shader: portal; side: double" 
+    rotation="0 -86.21385315905319 0" 
+    class="portal" data-url="https://carlatienzam-byte.github.io/EPE-IES-Carmen-de-Burgos-Segui/">
+      <a-entity text="align: center; color: white; font: kelsonsans; value: Hub; width: 5" 
+        position="0 1.5 0" 
+        rotation="0 180 0"></a-entity>
+    <a-entity text="align: center; color: white; font: kelsonsans; value: Volver al Hub; width: 5" 
+      position="0 1.5 0" rotation="0 180 0"></a-entity>
+    <a-entity 
+      geometry="primitive: sphere; phiLength: 180; thetaLength: 360; segmentsHeight: 64; segmentsWidth: 64" 
+      material="shader: portal; side: back; borderEnabled: 0" 
+      rotation="0 180 0" 
+      visible="false"></a-entity>
+    <a-entity 
+      geometry="primitive: sphere; radius: 10; segmentsHeight: 64; segmentsWidth: 64" 
+      material="shader: portal; side: back; borderEnabled: 0" 
+      visible="false"></a-entity>
+  </a-link>
 
     <!-- ── CÁMARA / RIG ── -->
     <a-entity id="rig" position="0 0 0" mobile-movement>

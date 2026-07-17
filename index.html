@@ -14,6 +14,14 @@ var SPEED = 0.250;
 var joyActive = false;
 var joyDx = 0, joyDy = 0;
 var vertDir = 0; /* -1 bajar, 0 quieto, +1 subir */
+
+/* Límites del mundo construido (calculados a partir del trazado real
+   de la carretera: luces, señales y portal). Con margen para no
+   sentirse encajonado, pero sin poder caminar hacia el vacío. */
+var WORLD_MIN_X = -35, WORLD_MAX_X = 35;
+var WORLD_MIN_Z = -70, WORLD_MAX_Z = 120;
+var CAM_MIN_Y = 0.5, CAM_MAX_Y = 8;
+
 AFRAME.registerComponent('mobile-movement', {
 tick: function () {
 var nx = joyDx / JOY_R;
@@ -34,9 +42,12 @@ pos.x += sinA * (-ny) * SPEED;
 pos.z += cosA * (-ny) * SPEED;
 pos.x += cosA * nx * SPEED;
 pos.z += (-sinA) * nx * SPEED;
+pos.x = Math.min(WORLD_MAX_X, Math.max(WORLD_MIN_X, pos.x));
+pos.z = Math.min(WORLD_MAX_Z, Math.max(WORLD_MIN_Z, pos.z));
 }
 if (vertDir !== 0) {
-camEl.object3D.position.y += vertDir * SPEED;
+var newY = camEl.object3D.position.y + vertDir * SPEED;
+camEl.object3D.position.y = Math.min(CAM_MAX_Y, Math.max(CAM_MIN_Y, newY));
 }
 }
 });

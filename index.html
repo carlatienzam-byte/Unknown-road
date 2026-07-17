@@ -150,6 +150,9 @@
   <!-- TOAST -->
   <div id="toast"></div>
 
+  <!-- AUDIO: canción que arranca tras el sonido de la máquina expendedora -->
+  <audio id="sitDownSong" src="Sit Down. Stand Up(MP3_160K).mp3" preload="auto"></audio>
+
   <!-- ══════════ ESCENA A-FRAME ══════════ -->
   <a-scene vr-mode-ui="enabled: true"
     gltf-model="dracoDecoderPath: https://www.gstatic.com/draco/versioned/decoders/1.5.7/">
@@ -346,6 +349,32 @@
         e.stopImmediatePropagation();
         e.preventDefault();
       }, true);
+    });
+
+    /* ── MÁQUINA EXPENDEDORA → ARRANCA "SIT DOWN. STAND UP" TRAS UNOS SEGUNDOS ── */
+    var maquinaExpendedora = document.getElementById('maquinaExpendedora');
+    var sitDownSong = document.getElementById('sitDownSong');
+    var sitDownDelayMs = 4000; // segundos de espera tras iniciar el zumbido de la máquina
+    var sitDownTimeout = null;
+    var sitDownStarted = false;
+
+    maquinaExpendedora.addEventListener('mouseenter', function () {
+      if (sitDownStarted) return; // ya sonó una vez; no se repite en próximos hovers
+      sitDownTimeout = setTimeout(function () {
+        sitDownSong.currentTime = 0;
+        sitDownSong.play().catch(function (err) {
+          console.warn('No se pudo reproducir "Sit Down. Stand Up":', err);
+        });
+        sitDownStarted = true;
+      }, sitDownDelayMs);
+    });
+
+    maquinaExpendedora.addEventListener('mouseleave', function () {
+      // Si el usuario aparta la mirada antes de que pase el tiempo, se cancela
+      if (sitDownTimeout && !sitDownStarted) {
+        clearTimeout(sitDownTimeout);
+        sitDownTimeout = null;
+      }
     });
 
     /* ── DESBLOQUEO DE AUDIO EN MÓVIL ── */

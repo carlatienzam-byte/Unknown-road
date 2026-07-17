@@ -159,22 +159,22 @@
     renderer="antialias: false; colorManagement: true; physicallyCorrectLights: false; maxCanvasWidth: 1600; maxCanvasHeight: 1600">
 
     <!-- ── MODELOS INTERACTIVOS (con texto emergente al mirar) ── -->
-    <a-gltf-model id="maquinaExpendedora"
+    <a-gltf-model id="maquinaExpendedora" class="clickable"
       src="7286875bc78e4ef496b64831b2348f31.glb" scale="1 1 1" position="-5 0 -5"
       sound="on: mouseenter; src: freesound_community-room-with-buzz-incandescent-light-bulb-23892.mp3; volume: 50"
       event-set__enter="_event: mouseenter; _target: #boxText; visible: true"
       event-set__leave="_event: mouseleave; _target: #boxText; visible: false">
     </a-gltf-model>
 
-    <a-gltf-model id="senal1" src="4349861a89594fb8923aebe3479420ec.glb" position="28.61811 -0.00967 -60.20071" rotation="0 -50 0"
+    <a-gltf-model id="senal1" class="clickable" src="4349861a89594fb8923aebe3479420ec.glb" position="28.61811 -0.00967 -60.20071" rotation="0 -50 0"
       event-set__enter="_event: mouseenter; _target: #boxText-1; visible: true"
       event-set__leave="_event: mouseleave; _target: #boxText-1; visible: false"></a-gltf-model>
 
-    <a-gltf-model id="senal2" src="4349861a89594fb8923aebe3479420ec.glb" position="26.90633 0.0453 -62.30645" rotation="0 -60 0"
+    <a-gltf-model id="senal2" class="clickable" src="4349861a89594fb8923aebe3479420ec.glb" position="26.90633 0.0453 -62.30645" rotation="0 -60 0"
       event-set__enter="_event: mouseenter; _target: #boxText-2; visible: true"
       event-set__leave="_event: mouseleave; _target: #boxText-2; visible: false"></a-gltf-model>
 
-    <a-gltf-model id="senal3" src="4349861a89594fb8923aebe3479420ec.glb" position="25.73594 0.0453 -64.55948" rotation="0 -60 0"
+    <a-gltf-model id="senal3" class="clickable" src="4349861a89594fb8923aebe3479420ec.glb" position="25.73594 0.0453 -64.55948" rotation="0 -60 0"
       event-set__enter="_event: mouseenter; _target: #boxText-3; visible: true"
       event-set__leave="_event: mouseleave; _target: #boxText-3; visible: false"></a-gltf-model>
 
@@ -245,7 +245,7 @@
         camera="userHeight: 0"
         look-controls="touchEnabled: true; magicWindowTrackingEnabled: false; pointerLockEnabled: false; reverseTouchDrag: true"
         wasd-controls="enabled: false">
-        <a-cursor color="#fff" fuse="false"></a-cursor>
+        <a-cursor color="#fff" fuse="false" raycaster="objects: .clickable; far: 15"></a-cursor>
       </a-camera>
     </a-entity>
 
